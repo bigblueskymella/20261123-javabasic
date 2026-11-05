@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><meta content="noindex,nofollow" name="robots"/><title>6회차 · 클래스와 객체 | Java 수업</title><link href="assets/style.css" rel="stylesheet"/></head><body>
+<header class="topbar"><button aria-label="목차 열기" class="menu-toggle">☰</button><a class="brand" href="index.html"><span class="brand-mark">J</span> Java 프로그래밍 <small>30시간 수업</small></a><div class="top-actions"><button aria-label="글자 축소" id="font-minus">A−</button><button aria-label="글자 확대" id="font-plus">A+</button><button aria-label="다크 모드 전환" id="theme">◐</button></div></header>
+<div class="layout"><aside class="sidebar"><div class="sidebar-title">전체 수업 <small>10회 · 30시간</small></div><a class="chapter" href="lesson01.html"><b>01</b><span>출력과 변수</span></a><a class="chapter" href="lesson02.html"><b>02</b><span>입력과 조건문</span></a><a class="chapter" href="lesson03.html"><b>03</b><span>반복문</span></a><a class="chapter" href="lesson04.html"><b>04</b><span>배열과 문자열</span></a><a class="chapter" href="lesson05.html"><b>05</b><span>메서드</span></a><a aria-current="page" class="chapter active" href="lesson06.html"><b>06</b><span>클래스와 객체</span></a><a class="chapter" href="lesson07.html"><b>07</b><span>목록과 장바구니</span></a><a class="chapter" href="lesson08.html"><b>08</b><span>키오스크 주문</span></a><a class="chapter" href="lesson09.html"><b>09</b><span>키오스크 결제</span></a><a class="chapter" href="lesson10.html"><b>10</b><span>최종 프로젝트</span></a><div class="sidebar-foot">교사용 화면 공유 교재<br/>학생에게 전체 사이트를 공개하지 마세요.</div></aside>
+<main class="main"><div class="top-meta"><strong class="teacher-mode-badge">교사용 해설 포함</strong>JAVA · 실습 중심 수업 <span>06 / 10</span></div><article class="article gb-body"><h1 id="06회차-클래스와-객체">06회차 | 클래스와 객체</h1>
+<blockquote>
+<p>3시간 · class · new · 생성자 · this · static · 접근 제어</p>
+</blockquote><section aria-labelledby="pf-title-6" class="pf-section">
+<h2 class="pf-title" id="요구사항-분석과-문제-분해">🎯 요구사항 분석과 문제 분해 <small>Problem Framing</small></h2>
+<p class="pf-lead">코드를 입력하기 전에 먼저 무엇을 만들어야 하는지 정리하고, 해결 과정을 작은 단계로 나눠 봅시다.</p>
+<div class="pf-cards"><div class="pf-card"><h3>🔎 1. 요구사항 분석하기</h3><p><strong>오늘 해결할 문제</strong><br/>계좌마다 이름과 잔액을 보관하고 입금·출금 결과가 해당 계좌에 반영되게 만들기</p><dl><div><dt>입력</dt><dd>계좌 주인, 최초 잔액, 입출금 금액</dd></div><div><dt>출력</dt><dd>변경된 잔액과 안내 문구</dd></div></dl></div>
+<div class="pf-card"><h3>🧩 2. 문제를 작은 단계로 나누기</h3><ol class="pf-steps"><li><span class="pf-num">1</span><span>계좌가 저장할 값 정하기</span></li><li><span class="pf-num">2</span><span>계좌의 행동 정하기</span></li><li><span class="pf-num">3</span><span>객체 생성하기</span></li><li><span class="pf-num">4</span><span>입금·출금 후 잔액 확인</span></li></ol></div></div>
+<div class="pf-paper-area"><div class="pf-paper"><h3>✏️ 3. 종이에 순서도 그리기</h3><p class="pf-paper-note">아래는 한 가지 예입니다. 먼저 노트에 직접 화살표와 상자를 그려 보세요.</p><div class="pf-flow"><a class="pf-flow-zoom" href="assets/flowchart-06.svg" rel="noopener" target="_blank" title="순서도 크게 보기"><img alt="6회차 문제 해결 순서도" class="pf-flow-illustration" loading="lazy" src="assets/flowchart-06.svg"/></a></div></div>
+<div class="pf-think"><h3>생각해 보기</h3><p>서로 다른 두 계좌의 잔액은 왜 따로 있어야 할까?</p><p class="pf-note">코드는 아직 쓰지 말고, 입력 → 판단·처리 → 출력 흐름을 말이나 그림으로 설명해 봅시다.</p><div class="pf-memo"><h4>간단한 로직 메모하기</h4><ul class="pf-checklist"><li>1 계좌가 저장할 값 정하기</li><li>2 계좌의 행동 정하기</li><li>3 객체 생성하기</li><li>4 입금·출금 후 잔액 확인</li></ul></div><div class="pf-tip"><h4>이렇게 생각해요!</h4><p>계좌마다 잔액을 따로 저장하고 메서드로 변경해요.</p></div></div></div>
+</section>
+<h2 id="오늘-해결할-문제">오늘 해결할 문제</h2>
+<p>카페에는 서로 이름과 가격이 다른 음료가 여러 개 있습니다. 이름과 가격을 따로 관리하는 대신, 음료 하나를 하나의 대상으로 표현해 봅시다.</p>
+<h3 id="코드를-보기-전에-생각하기">코드를 보기 전에 생각하기</h3>
+<ol>
+<li>아이스티의 이름과 가격이 한 세트라면 어떤 자료형으로 묶을 수 있을까요?</li>
+<li>같은 설계도로 서로 다른 음료를 여러 개 만들 수 있을까요?</li>
+<li>모든 음료가 공통으로 사용하는 카페 이름은 어디에 두면 좋을까요?</li>
+</ol>
+<blockquote>
+<p>먼저 말이나 그림으로 해결 방법을 설명한 뒤 코드를 입력합니다. 교사는 이 단계에서 완성 코드를 공개하지 않습니다.</p>
+</blockquote>
+<h2 id="수업-진행">수업 진행</h2>
+<table>
+<thead>
+<tr>
+<th>단계</th>
+<th style="text-align:right">시간</th>
+<th>활동</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>문제 이해·복습</td>
+<td style="text-align:right">25분</td>
+<td>현상 관찰, 해결 방법 예상</td>
+</tr>
+<tr>
+<td>1차 실습</td>
+<td style="text-align:right">45분</td>
+<td>기본 문법 직접 입력·실행</td>
+</tr>
+<tr>
+<td>2차 실습</td>
+<td style="text-align:right">55분</td>
+<td>RPG와 음료 키오스크에 교차 적용</td>
+</tr>
+<tr>
+<td>개별 확장</td>
+<td style="text-align:right">40분</td>
+<td>빈칸 완성·기능 변경·오류 찾기</td>
+</tr>
+<tr>
+<td>공유·정리</td>
+<td style="text-align:right">15분</td>
+<td>자기 코드 설명, 결과 확인</td>
+</tr>
+</tbody>
+</table>
+<h3>1단계. 변수로 음료 두 개를 관리해 보기</h3><p>지금까지 배운 변수만 사용하면 음료의 이름과 가격을 따로 보관해야 합니다. 상품이 늘어나면 name1, price1, name2, price2처럼 변수가 많아집니다.</p><div class="codebox"><div class="code-head"><span>java · 함께 입력</span></div><pre><code class="highlight"><span class="n">String</span><span class="w"> </span><span class="n">name1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"아이스티"</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">price1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3000</span><span class="p">;</span>
+<span class="n">String</span><span class="w"> </span><span class="n">name2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"초코라테"</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">price2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3500</span><span class="p">;</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">name1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">": "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">price1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"원"</span><span class="p">);</span></code></pre></div><p>질문: 음료를 20개 추가한다면 이름과 가격이 서로 뒤바뀌지 않게 관리하려면 어떻게 해야 할까요?</p><h3>2단계. 클래스에 정보 묶기</h3><p>클래스는 같은 종류의 정보와 동작을 묶는 설계입니다. 우선 생성자 없이 이름과 가격 필드만 선언하고, new를 이용해 객체를 만듭니다. 아래 코드는 ProductFirst.java로 저장합니다.</p><div class="codebox"><div class="code-head"><span>java · 함께 입력</span></div><pre><code class="highlight"><span class="kd">class</span> <span class="nc">DrinkInfo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">price</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ProductFirst</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">DrinkInfo</span><span class="w"> </span><span class="n">drink</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DrinkInfo</span><span class="p">();</span>
+<span class="w">    </span><span class="n">drink</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"아이스티"</span><span class="p">;</span>
+<span class="w">    </span><span class="n">drink</span><span class="p">.</span><span class="na">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3000</span><span class="p">;</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">drink</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">": "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">drink</span><span class="p">.</span><span class="na">price</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"원"</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span></code></pre></div><p>DrinkInfo는 설계도이고 drink는 생성된 객체를 가리키는 변수입니다. drink.name은 해당 객체의 이름입니다.</p><h3>3단계. 학생이 직접 객체 추가하기</h3><p>같은 DrinkInfo 설계로 초코라테 객체를 추가해 보세요. 이미 배운 new와 필드 대입만 사용합니다.</p><div class="codebox"><div class="code-head"><span>java · 함께 입력</span></div><pre><code class="highlight"><span class="n">DrinkInfo</span><span class="w"> </span><span class="n">drink2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">DrinkInfo</span><span class="p">();</span>
+<span class="c1">// TODO: drink2.name에 "초코라테" 저장</span>
+<span class="c1">// TODO: drink2.price에 3500 저장</span>
+<span class="c1">// TODO: 이름과 가격 출력</span></code></pre></div><p>필수 과제: 이름과 가격이 정확히 출력되는지 확인한 뒤 교사용 정답을 열어 비교하세요.</p><details class="teacher-answer" data-answer-only="true" data-teacher-answer=""><summary>교사용 정답 보기 · ProductFirst.java</summary><div class="teacher-answer-body"><div class="codebox"><div class="code-head"><span>java · 함께 입력</span></div><pre><code class="highlight"><span class="n">drink2</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"초코라테"</span><span class="p">;</span>
+<span class="n">drink2</span><span class="p">.</span><span class="na">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3500</span><span class="p">;</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">drink2</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">": "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">drink2</span><span class="p">.</span><span class="na">price</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"원"</span><span class="p">);</span></code></pre></div></div></details><h2 id="실습-1-객체-만들기">실습 1. 객체 만들기</h2>
+<p>상품 클래스를 정의하고 <code>new</code>로 서로 다른 객체를 만듭니다.</p>
+<p><strong>ProductDemo.java</strong></p>
+<div class="codebox"><div class="code-head"><span>java</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight"><span class="kd">class</span> <span class="nc">Product</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">price</span><span class="p">;</span>
+<span class="w">  </span><span class="n">Product</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">price</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// this.name은 이 객체의 필드를 뜻한다.</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">price</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ProductDemo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Product</span><span class="w"> </span><span class="n">tea</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Product</span><span class="p">(</span><span class="s">"아이스티"</span><span class="p">,</span><span class="w"> </span><span class="mi">3000</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Product</span><span class="w"> </span><span class="n">choco</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Product</span><span class="p">(</span><span class="s">"초코라테"</span><span class="p">,</span><span class="w"> </span><span class="mi">3500</span><span class="p">);</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">tea</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">" "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">tea</span><span class="p">.</span><span class="na">price</span><span class="p">);</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">choco</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">" "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">choco</span><span class="p">.</span><span class="na">price</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span></code></pre></div><p><strong>코드를 입력하며 확인할 점</strong></p>
+<ul>
+<li>이 예제의 **파일명은 <code>ProductDemo.java</code>**입니다. (Java 공개 클래스 이름과 일치해야 합니다.)</li>
+<li><code>new</code>는 클래스를 바탕으로 객체를 만듭니다.</li>
+<li>생성자는 객체를 만들 때 초기 값을 설정합니다.</li>
+</ul>
+<h3>4단계. 생성자가 필요한 이유</h3><p>지금까지는 객체를 생성한 다음 이름과 가격을 따로 입력했습니다. 생성자를 사용하면 new Product("아이스티", 3000)처럼 만들 때 바로 초기값을 넘길 수 있습니다.</p><div class="codebox"><div class="code-head"><span>java · 함께 입력</span></div><pre><code class="highlight"><span class="n">Product</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">price</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">  </span><span class="k">this</span><span class="p">.</span><span class="na">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">price</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div><p>this.name은 객체 안에 저장된 필드이고 오른쪽 name은 매개변수입니다. 같은 이름이라도 가리키는 대상이 다릅니다. 생성자 이름은 클래스 이름과 같고 반환형은 쓰지 않습니다.</p><h2 id="실습-2-객체에-행동-넣기">실습 2. 객체에 행동 넣기</h2>
+<p>상품이 스스로 정보를 출력하는 메서드를 만들도록 합니다.</p>
+<p><strong>Shop.java</strong></p>
+<div class="codebox"><div class="code-head"><span>java</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight"><span class="kd">class</span> <span class="nc">Drink</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">price</span><span class="p">;</span>
+<span class="w">  </span><span class="n">Drink</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">price</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">price</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">printInfo</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// TODO: 이름과 가격을 출력하세요.</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Shop</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Drink</span><span class="w"> </span><span class="n">drink</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Drink</span><span class="p">(</span><span class="s">"레몬에이드"</span><span class="p">,</span><span class="w"> </span><span class="mi">3500</span><span class="p">);</span>
+<span class="w">    </span><span class="n">drink</span><span class="p">.</span><span class="na">printInfo</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span></code></pre></div><details class="teacher-answer" data-answer-only="true" data-teacher-answer=""><summary>교사용 정답 보기 · Shop.java 완성 코드</summary><div class="teacher-answer-body"><div class="codebox"><div class="code-head"><span>Shop.java</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight"><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">" : "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">price</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"원"</span><span class="p">);</span></code></pre></div></div></details><p><strong>코드를 입력하며 확인할 점</strong></p>
+<ul>
+<li>객체의 데이터는 필드, 객체의 행동은 메서드로 표현합니다.</li>
+<li><code>drink.printInfo()</code>는 특정 객체의 메서드를 호출합니다.</li>
+</ul>
+<h2 id="실습-3-static이-필요한-이유">실습 3. static이 필요한 이유</h2>
+<p>개별 객체의 값과 클래스 전체에서 공유하는 값을 비교합니다.</p>
+<p><strong>Counter.java</strong></p>
+<div class="codebox"><div class="code-head"><span>java</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight"><span class="kd">class</span> <span class="nc">Hero</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">hp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">created</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// Hero 클래스에 소속된 공통 변수</span>
+<span class="w">  </span><span class="n">Hero</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">    </span><span class="n">created</span><span class="o">++</span><span class="p">;</span><span class="w"> </span><span class="c1">// 새 객체를 만들 때 공유 개수를 늘린다.</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Counter</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Hero</span><span class="w"> </span><span class="n">first</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Hero</span><span class="p">(</span><span class="s">"전사"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Hero</span><span class="w"> </span><span class="n">second</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Hero</span><span class="p">(</span><span class="s">"마법사"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">first</span><span class="p">.</span><span class="na">hp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">40</span><span class="p">;</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">first</span><span class="p">.</span><span class="na">hp</span><span class="p">);</span><span class="w"> </span><span class="c1">// 40</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">second</span><span class="p">.</span><span class="na">hp</span><span class="p">);</span><span class="w"> </span><span class="c1">// 100</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">Hero</span><span class="p">.</span><span class="na">created</span><span class="p">);</span><span class="w"> </span><span class="c1">// 2</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span></code></pre></div><p><strong>코드를 입력하며 확인할 점</strong></p>
+<ul>
+<li><code>hp</code>는 <strong>객체마다 따로 존재</strong>하지만 <code>created</code>는 <strong>클래스에 하나만 소속</strong>됩니다.</li>
+<li><code>static</code> 메서드는 객체를 만들지 않아도 클래스 이름으로 호출할 수 있습니다. <code>main()</code>과 <code>Math.min()</code>이 예입니다.</li>
+<li>실제 프로젝트에서는 필드를 <code>private</code>으로 숨기고 메서드로 접근하도록 만드는 캡슐화도 사용합니다.</li>
+</ul>
+<h2 id="추가-연습-은행-계좌">추가 연습 — 은행 계좌로 객체 이해하기</h2><p>5회차에서는 메서드로 작업을 나누는 방법을 배웠습니다. 이번에는 은행 계좌를 객체로 만들어 잔액을 직접 저장하고, 입금·출금 기능을 계좌마다 관리해 봅시다. 실제 금융 서비스가 아닌 연습 프로그램입니다.</p><h3>1. 계좌를 객체로 표현하기</h3><p>계좌에는 주인(owner)과 잔액(balance)이 있습니다. 이 두 값을 BankAccount 클래스의 필드로 묶습니다. BankAccount("민수", 10000)은 이름과 처음 잔액을 전달해 객체를 생성합니다.</p><p>deposit(5000)을 호출하면 account 객체의 balance가 바뀝니다. main()에서 별도로 잔액 변수를 다시 저장할 필요가 없습니다. 메서드가 해당 객체의 필드를 직접 변경하기 때문입니다.</p><h3>2. 먼저 결과 예상하기</h3><p>처음 잔액은 10,000원입니다. 5,000원을 입금하고 3,000원을 출금한 뒤 20,000원을 더 출금하려고 합니다. 최종 잔액은 얼마일까요? 왜 그렇게 생각했나요?</p><h3>3. 출금과 잔액 조회 완성하기</h3><p>파일명: BankDemo.java. BankAccount와 BankDemo는 하나의 파일에 작성합니다. public 클래스 이름과 파일명을 같게 해야 합니다. TODO 두 곳을 완성하고 실행하세요.</p><div class="codebox"><div class="code-head"><span>java</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight"><span class="kd">class</span> <span class="nc">BankAccount</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">String</span><span class="w"> </span><span class="n">owner</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">balance</span><span class="p">;</span>
+<span class="w">  </span><span class="n">BankAccount</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">owner</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">balance</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">owner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">owner</span><span class="p">;</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">balance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">balance</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="c1">// 입금액을 계좌의 잔액에 더한다.</span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">deposit</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">money</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">money</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">balance</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">money</span><span class="p">;</span>
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"💰 "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">money</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"원 입금"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="c1">// TODO 1: 출금할 수 있으면 잔액에서 돈을 빼세요.</span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">withdraw</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">money</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">money</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"1원 이상 입력하세요."</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">money</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">balance</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"잔액이 부족합니다."</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">// TODO: 출금액만큼 balance를 줄이세요.</span>
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"💸 "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">money</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"원 출금"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="c1">// TODO 2: 계좌 주인과 남은 잔액을 출력하세요.</span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">showBalance</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// TODO: 이름과 잔액 출력</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">BankDemo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">BankAccount</span><span class="w"> </span><span class="n">account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BankAccount</span><span class="p">(</span><span class="s">"민수"</span><span class="p">,</span><span class="w"> </span><span class="mi">10000</span><span class="p">);</span>
+<span class="w">    </span><span class="n">account</span><span class="p">.</span><span class="na">showBalance</span><span class="p">();</span>
+<span class="w">    </span><span class="n">account</span><span class="p">.</span><span class="na">deposit</span><span class="p">(</span><span class="mi">5000</span><span class="p">);</span>
+<span class="w">    </span><span class="n">account</span><span class="p">.</span><span class="na">withdraw</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
+<span class="w">    </span><span class="n">account</span><span class="p">.</span><span class="na">withdraw</span><span class="p">(</span><span class="mi">20000</span><span class="p">);</span>
+<span class="w">    </span><span class="n">account</span><span class="p">.</span><span class="na">showBalance</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span></code></pre></div><details class="teacher-answer" data-answer-only="true" data-teacher-answer=""><summary>교사용 정답 보기 · TODO 1 · 출금 처리</summary><div class="teacher-answer-body"><div class="codebox"><div class="code-head"><span>정답</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight"><span class="n">balance</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="n">money</span><span class="p">;</span></code></pre></div></div></details><details class="teacher-answer" data-answer-only="true" data-teacher-answer=""><summary>교사용 정답 보기 · TODO 2 · 잔액 조회</summary><div class="teacher-answer-body"><div class="codebox"><div class="code-head"><span>정답</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight"><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">owner</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"의 잔액: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">balance</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"원"</span><span class="p">);</span></code></pre></div></div></details><h3>4. 실행 결과 확인</h3><pre>민수의 잔액: 10000원
+💰 5000원 입금
+💸 3000원 출금
+잔액이 부족합니다.
+민수의 잔액: 12000원</pre><h3>5. 도전 — 계좌 두 개로 비교해 보기</h3><p>BankAccount 객체를 하나 더 만들어 다른 이름과 잔액을 설정해 보세요. 한 계좌에 입금했을 때 다른 계좌 잔액이 바뀌지 않는 이유를 설명해 봅니다.</p><div class="codebox"><div class="code-head"><span>java</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight"><span class="c1">// main() 안에 추가해 보세요.</span>
+<span class="n">BankAccount</span><span class="w"> </span><span class="n">friend</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">BankAccount</span><span class="p">(</span><span class="s">"지우"</span><span class="p">,</span><span class="w"> </span><span class="mi">8000</span><span class="p">);</span>
+<span class="c1">// TODO 3: friend 계좌에 2000원을 입금하고 잔액을 출력하세요.</span></code></pre></div><details class="teacher-answer" data-answer-only="true" data-teacher-answer=""><summary>교사용 정답 보기 · TODO 3 · 다른 객체 연습</summary><div class="teacher-answer-body"><div class="codebox"><div class="code-head"><span>정답</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight"><span class="n">friend</span><span class="p">.</span><span class="na">deposit</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span>
+<span class="n">friend</span><span class="p">.</span><span class="na">showBalance</span><span class="p">();</span></code></pre></div></div></details><p>핵심: balance는 static이 아닌 객체 필드이므로 계좌마다 별도 값으로 관리됩니다. BankAccount의 메서드는 자기 객체의 잔액을 사용합니다.</p><h2 id="private-접근-제어자-맛보기">추가 개념 — <code>private</code>으로 잔액 보호하기</h2>
+<p>은행 계좌의 잔액을 누구나 직접 바꿀 수 있다면 문제가 생길 수 있습니다. <code>private</code>은 <strong>해당 클래스 내부에서만 접근할 수 있게 제한</strong>하는 키워드입니다. 잔액은 입금·출금 메서드를 통해 변경하고, 조회 메서드를 통해 확인하도록 해 봅시다.</p>
+<p><strong>BankAccount.java — 개념 예시</strong></p>
+<div class="codebox"><div class="code-head"><span>java</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight">class BankAccount {
+  private int balance;
+
+  BankAccount(int balance) {
+    this.balance = balance;
+  }
+
+  void deposit(int money) {
+    if (money &gt; 0) {
+      balance += money;
+    }
+  }
+
+  int getBalance() {
+    return balance;
+  }
+}</code></pre></div>
+<p><strong>생각해 보기:</strong> 클래스 밖에서 <code>account.balance = 1000000;</code>을 실행하려 하면 왜 오류가 날까요?</p>
+<details class="teacher-answer"><summary>교사용 정답 보기 · private</summary><div class="teacher-answer-body"><p><code>balance</code>가 <code>private</code>이라 클래스 바깥에서 직접 접근할 수 없기 때문입니다. 입금은 <code>deposit()</code>으로, 조회는 <code>getBalance()</code>로 처리합니다.</p></div></details>
+<p class="concept-note">이번에는 <code>private</code>으로 데이터를 보호한다는 의미만 익힙니다. 다른 접근 제어자와 getter·setter의 자세한 사용법은 다음 과정에서 배웁니다.</p>
+<h2 id="학생-도전-과제">학생 도전 과제</h2>
+<ul>
+<li>[ ] <code>Shop.java</code>의 <code>printInfo()</code> 완성하기</li>
+<li>[ ] 두 개의 Drink 객체를 만들고 각각 출력하기</li>
+<li>[ ] <code>Counter.java</code>에서 캐릭터 한 명을 더 만들면 <code>created</code>는 몇인지 예상하기</li>
+</ul>
+<h2 id="마무리-오늘-설명할-수-있어야-하는-것">마무리: 오늘 설명할 수 있어야 하는 것</h2>
+<ul>
+<li>클래스와 객체의 관계</li>
+<li>생성자와 <code>this</code>의 의미</li>
+<li>객체 필드와 <code>static</code> 필드의 차이</li>
+</ul>
+<hr/>
+<p><a href="index.html">← 전체 목차</a></p>
+</article><nav class="page-navigation"><a href="lesson05.html">← 이전 회차</a><a href="lesson07.html">다음 회차 →</a></nav></main>
+<aside class="toc"><div class="toc-header">이 페이지의 목차</div><a class="l2" href="#요구사항-분석과-문제-분해">요구사항 분석과 문제 분해</a><a class="l2" href="#오늘-해결할-문제">오늘 해결할 문제</a><a class="l3" href="#코드를-보기-전에-생각하기">코드를 보기 전에 생각하기</a><a class="l2" href="#수업-진행">수업 진행</a><a class="l2" href="#실습-1-객체-만들기">실습 1. 객체 만들기</a><a class="l2" href="#실습-2-객체에-행동-넣기">실습 2. 객체에 행동 넣기</a><a class="l2" href="#실습-3-static이-필요한-이유">실습 3. static이 필요한 이유</a><a class="l2" href="#학생-도전-과제">학생 도전 과제</a><a class="l2" href="#마무리-오늘-설명할-수-있어야-하는-것">마무리: 오늘 설명할 수 있어야 하는 것</a></aside></div><script src="assets/app.js"></script></body></html>

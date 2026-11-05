@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><meta content="noindex,nofollow" name="robots"/><title>7회차 · 목록과 장바구니 | Java 수업</title><link href="assets/style.css" rel="stylesheet"/></head><body>
+<header class="topbar"><button aria-label="목차 열기" class="menu-toggle">☰</button><a class="brand" href="index.html"><span class="brand-mark">J</span> Java 프로그래밍 <small>30시간 수업</small></a><div class="top-actions"><button aria-label="글자 축소" id="font-minus">A−</button><button aria-label="글자 확대" id="font-plus">A+</button><button aria-label="다크 모드 전환" id="theme">◐</button></div></header>
+<div class="layout"><aside class="sidebar"><div class="sidebar-title">전체 수업 <small>10회 · 30시간</small></div><a class="chapter" href="lesson01.html"><b>01</b><span>출력과 변수</span></a><a class="chapter" href="lesson02.html"><b>02</b><span>입력과 조건문</span></a><a class="chapter" href="lesson03.html"><b>03</b><span>반복문</span></a><a class="chapter" href="lesson04.html"><b>04</b><span>배열과 문자열</span></a><a class="chapter" href="lesson05.html"><b>05</b><span>메서드</span></a><a class="chapter" href="lesson06.html"><b>06</b><span>클래스와 객체</span></a><a aria-current="page" class="chapter active" href="lesson07.html"><b>07</b><span>목록과 장바구니</span></a><a class="chapter" href="lesson08.html"><b>08</b><span>키오스크 주문</span></a><a class="chapter" href="lesson09.html"><b>09</b><span>키오스크 결제</span></a><a class="chapter" href="lesson10.html"><b>10</b><span>최종 프로젝트</span></a><div class="sidebar-foot">교사용 화면 공유 교재<br/>학생에게 전체 사이트를 공개하지 마세요.</div></aside>
+<main class="main"><div class="top-meta"><strong class="teacher-mode-badge">교사용 해설 포함</strong>JAVA · 실습 중심 수업 <span>07 / 10</span></div><article class="article gb-body"><h1 id="7회차-목록과-장바구니">7회차 — 목록과 장바구니</h1>
+<p><strong>학습 목표</strong>: <code>ArrayList</code>로 데이터 개수가 달라지는 목록을 관리하고, 주문을 추가·조회·취소할 수 있다.</p><section aria-labelledby="pf-title-7" class="pf-section">
+<h2 class="pf-title" id="요구사항-분석과-문제-분해">🎯 요구사항 분석과 문제 분해 <small>Problem Framing</small></h2>
+<p class="pf-lead">코드를 입력하기 전에 먼저 무엇을 만들어야 하는지 정리하고, 해결 과정을 작은 단계로 나눠 봅시다.</p>
+<div class="pf-cards"><div class="pf-card"><h3>🔎 1. 요구사항 분석하기</h3><p><strong>오늘 해결할 문제</strong><br/>아이템을 추가하거나 삭제하고, 여러 주문을 객체 목록으로 관리하기</p><dl><div><dt>입력</dt><dd>목록, 추가할 항목, 삭제할 번호</dd></div><div><dt>출력</dt><dd>변경된 목록과 총금액</dd></div></dl></div>
+<div class="pf-card"><h3>🧩 2. 문제를 작은 단계로 나누기</h3><ol class="pf-steps"><li><span class="pf-num">1</span><span>배열의 크기 제한 떠올리기</span></li><li><span class="pf-num">2</span><span>목록에 객체 추가하기</span></li><li><span class="pf-num">3</span><span>목록을 순서대로 확인하기</span></li><li><span class="pf-num">4</span><span>선택한 항목 수정·삭제</span></li></ol></div></div>
+<div class="pf-paper-area"><div class="pf-paper"><h3>✏️ 3. 종이에 순서도 그리기</h3><p class="pf-paper-note">아래는 한 가지 예입니다. 먼저 노트에 직접 화살표와 상자를 그려 보세요.</p><div class="pf-flow"><a class="pf-flow-zoom" href="assets/flowchart-07.svg" rel="noopener" target="_blank" title="순서도 크게 보기"><img alt="7회차 문제 해결 순서도" class="pf-flow-illustration" loading="lazy" src="assets/flowchart-07.svg"/></a></div></div>
+<div class="pf-think"><h3>생각해 보기</h3><p>화면 1번과 ArrayList의 0번은 어떤 관계일까?</p><p class="pf-note">코드는 아직 쓰지 말고, 입력 → 판단·처리 → 출력 흐름을 말이나 그림으로 설명해 봅시다.</p><div class="pf-memo"><h4>간단한 로직 메모하기</h4><ul class="pf-checklist"><li>1 배열의 크기 제한 떠올리기</li><li>2 목록에 객체 추가하기</li><li>3 목록을 순서대로 확인하기</li><li>4 선택한 항목 수정·삭제</li></ul></div><div class="pf-tip"><h4>이렇게 생각해요!</h4><p>화면 번호와 목록 인덱스의 차이를 확인한 뒤 삭제해요.</p></div></div></div>
+</section>
+<h2 id="문제-상황부터-생각하기">문제 상황부터 생각하기</h2>
+<p>아이스티 2잔과 레몬에이드 1잔이 담겨 있습니다. 아이스티 한 잔만 취소하고 싶다면 <strong>장바구니 항목 삭제</strong>와 <strong>수량 감소</strong> 중 무엇을 해야 할까요? 두 방법은 언제 달라질까요?</p>
+<ul>
+<li>같은 음료가 각각 다른 항목으로 들어갔을 때와 한 항목에 수량 2로 저장될 때를 그림으로 비교합니다.</li>
+<li>화면의 첫 주문은 <strong>1번</strong>인데, 자바의 목록 첫 번째 인덱스는 <strong>0</strong>입니다. 삭제할 때 어떤 계산이 필요할까요?</li>
+<li>목록에 세 가지 음료가 들어 있을 때 <code>remove(1)</code>은 무엇을 지울까요? 실행 전에 적어 보세요.</li>
+</ul>
+<h2 id="수업-진행-180분">수업 진행 (180분)</h2>
+<table>
+<thead>
+<tr>
+<th>단계</th>
+<th style="text-align:right">시간</th>
+<th>활동</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>문제 제시</td>
+<td style="text-align:right">20분</td>
+<td>실행 전에 결과·데이터 변화 예상</td>
+</tr>
+<tr>
+<td>개념 설명과 실습 1</td>
+<td style="text-align:right">45분</td>
+<td>교사와 함께 입력·수정</td>
+</tr>
+<tr>
+<td>다른 프로그램에 응용</td>
+<td style="text-align:right">50분</td>
+<td>RPG ↔ 키오스크 교차 연습</td>
+</tr>
+<tr>
+<td>학생 개별 구현</td>
+<td style="text-align:right">50분</td>
+<td>TODO 직접 작성, 다른 입력값으로 검증</td>
+</tr>
+<tr>
+<td>정리</td>
+<td style="text-align:right">15분</td>
+<td>자신이 바꾼 코드의 동작 설명</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>실습 방법</strong>: 먼저 질문에 답하고, 해당 회차 폴더의 Java 파일을 열어 <code>TODO</code>를 작성합니다. 정답이 없는 상태의 파일이므로 직접 실행 결과를 확인하세요. 설명을 듣기 전에는 완성 코드를 찾아보지 않습니다.</p>
+</blockquote>
+<h2 id="개념-1-배열과-arraylist는-무엇이-다를까">개념 1. 배열과 ArrayList는 무엇이 다를까?</h2><h3>먼저 복습 — 일반 배열로 아이템 3개 관리하기</h3><p>4회차에서 배운 배열을 떠올려 봅시다. 배열은 여러 값을 순서대로 저장하고 인덱스 0부터 접근합니다. 아래 예제는 새 문법 없이 직접 입력할 수 있습니다.</p><p>파일: ArrayReview.java</p><div class="codebox"><div class="code-head"><span>java · 직접 입력</span></div><pre><code class="highlight"><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ArrayReview</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s">"검"</span><span class="p">,</span><span class="w"> </span><span class="s">"방패"</span><span class="p">,</span><span class="w"> </span><span class="s">"물약"</span><span class="p">};</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="na">length</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">((</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">". "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">items</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span></code></pre></div><p>실행 전에 예측하기: 화면의 1번 아이템은 배열의 몇 번째 인덱스일까요? 방패 이름을 활로 바꾸려면 어떤 줄을 추가하면 될까요?</p><details class="teacher-answer"><summary>교사용 정답 보기 · 일반 배열 복습</summary><div class="codebox"><div class="code-head"><span>java · 정답 코드</span></div><pre><code class="highlight"><span class="n">items</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"활"</span><span class="p">;</span></code></pre></div></details><p>이번에는 아이템을 하나 더 추가하려고 합니다. 이미 만든 배열의 길이를 실행 중에 직접 늘릴 수는 없습니다. 새 배열을 만들고 복사할 수도 있지만, 추가·삭제가 잦으면 불편합니다. 그래서 크기를 바꿀 수 있는 ArrayList를 사용합니다.</p><h3>비교 — 배열과 ArrayList</h3><p>배열은 items.length로 길이를 확인하고 items[0]처럼 접근합니다. ArrayList는 items.size()로 항목 수를 확인하고 items.get(0)으로 접근합니다. ArrayList에 항목을 추가할 때는 add(), 삭제할 때는 remove()를 씁니다.</p>
+<p>배열은 생성할 때 크기가 정해집니다. <code>ArrayList</code>는 <code>add()</code>로 항목을 더하고 <code>remove()</code>로 삭제할 수 있는 목록입니다.</p>
+<div class="codebox"><div class="code-head"><span>java</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight"><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span><span class="w"> </span><span class="c1">// 문자열 목록 생성</span>
+<span class="n">cart</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">"아이스티"</span><span class="p">);</span><span class="w"> </span><span class="c1">// 맨 뒤에 추가</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">cart</span><span class="p">.</span><span class="na">size</span><span class="p">());</span><span class="w"> </span><span class="c1">// 항목 개수</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">cart</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span><span class="w"> </span><span class="c1">// 첫 번째 항목</span></code></pre></div><p><code>ArrayList</code>를 쓰려면 파일 맨 위에 <code>import java.util.ArrayList;</code>가 필요합니다. <code>cart.size()</code>는 <strong>수량 합계가 아니라 목록 항목 수</strong>입니다.</p>
+<p><strong>삭제를 하기 전에 <code>remove()</code>를 먼저 연습합니다.</strong></p>
+<div class="codebox"><div class="code-head"><span>java</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight"><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">drinks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="n">drinks</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">"아이스티"</span><span class="p">);</span>
+<span class="n">drinks</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">"초코라테"</span><span class="p">);</span>
+<span class="n">drinks</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">"레몬에이드"</span><span class="p">);</span>
+<span class="n">drinks</span><span class="p">.</span><span class="na">remove</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span><span class="w"> </span><span class="c1">// 인덱스 1인 초코라테 삭제</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">drinks</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="mi">1</span><span class="p">));</span><span class="w"> </span><span class="c1">// 이제 레몬에이드</span></code></pre></div><p><code>remove(1)</code>에서 1은 사람이 보는 '1번 메뉴'가 아니라 <strong>인덱스 1, 즉 두 번째 항목</strong>이라는 점에 주의합니다.</p>
+<h2 id="실습-1-목록의-두-번째-항목-삭제">실습 1. 목록의 두 번째 항목 삭제</h2>
+<p><strong>파일: <code>ListDemo.java</code></strong> · <code>07_목록과_장바구니/ListDemo.java</code></p><div class="codebox"><div class="code-head"><span>java · 실습 코드</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight"><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.ArrayList</span><span class="p">;</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">ListDemo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="w">    </span><span class="n">cart</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">"아이스티"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">cart</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">"초코라테"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">cart</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">"아이스티"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"주문 개수: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">cart</span><span class="p">.</span><span class="na">size</span><span class="p">());</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">cart</span><span class="p">.</span><span class="na">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">((</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">". "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">cart</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="c1">// TODO: 두 번째 항목을 삭제해 보세요.</span>
+<span class="w">    </span><span class="c1">// 학생 작성: cart의 두 번째 항목을 삭제하는 한 줄</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"삭제 후: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">cart</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span></code></pre></div><details class="teacher-answer"><summary>교사용 정답 보기 · ListDemo.java</summary><div class="teacher-answer-body"><div class="codebox"><div class="code-head"><span>java · 정답 코드</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight"><span class="n">cart</span><span class="p">.</span><span class="na">remove</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span></code></pre></div></div></details>
+<ol>
+<li>실행 전 목록 항목을 순서대로 적습니다.</li>
+<li><code>TODO</code>에 두 번째 항목을 삭제하는 코드를 입력합니다.</li>
+<li>삭제 전후 <code>size()</code>와 출력 결과를 비교합니다.</li>
+</ol>
+<p><strong>생각할 질문</strong>: 같은 아이스티를 두 번 추가했을 때, 어느 아이스티가 사라졌는지 구별할 수 있나요?</p>
+<h2 id="실습-2-여러-주문의-금액-합산">실습 2. 여러 주문의 금액 합산</h2><p>파일: Cart.java</p><p>앞의 실습에서는 String 배열과 ArrayList&lt;String&gt;으로 이름만 관리했습니다. 실제 주문은 이름·가격·수량을 함께 기억해야 하므로 6회차에서 배운 클래스를 사용합니다. Order 객체 하나를 먼저 만들고 sum(cart)를 호출해 본 뒤, 여러 Order를 ArrayList에 넣습니다.</p><h3>sum(cart)는 무엇일까?</h3><p>`sum(cart)`는 주문 목록 전체를 전달받아 가격 × 수량을 모두 더하는 메서드입니다. `Order`는 음료 한 건의 이름·가격·수량만 저장하고, 계산은 Cart의 sum()에서 담당합니다.</p><div class="codebox"><div class="code-head"><span>java · Order 클래스 안에 정의된 메서드 사용 예시</span></div><pre><code class="highlight" data-replace-id="3"><span class="n">Order</span><span class="w"> </span><span class="n">one</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Order</span><span class="p">(</span><span class="s">"아이스티"</span><span class="p">,</span><span class="w"> </span><span class="mi">3000</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">one</span><span class="p">.</span><span class="na">price</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">one</span><span class="p">.</span><span class="na">qty</span><span class="p">);</span><span class="w"> </span><span class="c1">// 6000</span></code></pre></div><p>amount는 자바에서 정해 놓은 명령이 아니라 우리가 직접 만드는 메서드 이름입니다. 한 주문의 금액인 가격(price) × 수량(qty)을 계산해서 돌려주도록 작성합니다.</p><div class="codebox"><div class="code-head"><span>java · Order 클래스 먼저 읽기</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight" data-replace-id="1"><span class="kd">class</span> <span class="nc">Order</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">price</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">qty</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">Order</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">qty</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">price</span><span class="p">;</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">qty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">qty</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// 장바구니를 합산하는 메서드는 다음 실습에서 작성합니다.</span>
+<span class="c1">// sum(cart)는 주문 목록 전체의 금액을 계산해 반환합니다.</span></code></pre></div><p>예를 들어 아이스티 3,000원을 2잔 주문했다면 sum(cart)의 결과는 6,000입니다. 앞 회차에서 배운 return처럼 계산한 값을 호출한 곳으로 돌려줍니다.</p><p>for (Order order : cart)는 cart에 있는 주문을 하나씩 꺼내 order 변수에 넣는 문장입니다. 파이썬의 for order in cart:와 비슷합니다. 일반 for문과 달리 인덱스 번호를 따로 계산하지 않아도 됩니다.</p><div class="codebox"><div class="code-head"><span>Cart.java · 실습 코드</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight" data-replace-id="2"><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.ArrayList</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nc">Order</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">price</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">qty</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">Order</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">qty</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">price</span><span class="p">;</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="na">qty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">qty</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Cart</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cart</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Order</span><span class="w"> </span><span class="n">order</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">cart</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">// TODO: 가격과 수량을 곱해 합계에 더하세요.</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">total</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="w">    </span><span class="n">cart</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Order</span><span class="p">(</span><span class="s">"아이스티"</span><span class="p">,</span><span class="w"> </span><span class="mi">3000</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">));</span>
+<span class="w">    </span><span class="n">cart</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Order</span><span class="p">(</span><span class="s">"초코라테"</span><span class="p">,</span><span class="w"> </span><span class="mi">3500</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">));</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"총 결제금액: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">cart</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"원"</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span></code></pre></div><p>예상 결과는 9,500원입니다. Order 객체 두 개를 목록에 넣은 다음, 향상된 for문으로 한 건씩 꺼내 sum(cart)를 호출합니다.</p><details class="teacher-answer"><summary>교사용 정답 보기 · Cart.java</summary><div class="teacher-answer-body"><div class="codebox"><div class="code-head"><span>java · 정답 코드</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight" data-replace-id="4"><span class="n">total</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">order</span><span class="p">.</span><span class="na">price</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">order</span><span class="p">.</span><span class="na">qty</span><span class="p">;</span></code></pre></div></div></details><p>학생 과제: 아이스티 수량을 2잔에서 1잔으로 바꿔 보고, 합계가 얼마인지 먼저 예상한 다음 실행하세요.</p>
+<h2 id="실습-3-주문-번호로-삭제">실습 3. 주문 번호로 삭제</h2>
+<p><strong>파일: CartEdit.java</strong></p>
+<p>화면에는 장바구니 번호가 1번부터 표시되지만, ArrayList의 인덱스는 0부터 시작합니다. 따라서 1번을 취소하려면 remove(0)을 사용해야 합니다. 주문 번호가 0이거나 목록 범위를 벗어나면 삭제하지 않아야 합니다.</p>
+<p>아래 코드를 함께 입력한 뒤, TODO 한 줄을 완성하세요. 프로그램을 다시 실행하면서 1, 0, 3, -1을 각각 입력해 보세요. (처음 장바구니에는 음료 2개가 있습니다.)</p><div class="codebox"><div class="code-head"><span>CartEdit.java · 함께 입력</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight" data-replace-id="5"><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.ArrayList</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Scanner</span><span class="p">;</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">CartEdit</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Order</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">price</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">qty</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">Order</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">qty</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">price</span><span class="p">;</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">qty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">qty</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="w">    </span><span class="n">cart</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Order</span><span class="p">(</span><span class="s">"아이스티"</span><span class="p">,</span><span class="w"> </span><span class="mi">3000</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">));</span>
+<span class="w">    </span><span class="n">cart</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Order</span><span class="p">(</span><span class="s">"초코라테"</span><span class="p">,</span><span class="w"> </span><span class="mi">3500</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">));</span>
+<span class="w">    </span><span class="n">Scanner</span><span class="w"> </span><span class="n">sc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Scanner</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">in</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">cart</span><span class="p">.</span><span class="na">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">Order</span><span class="w"> </span><span class="n">order</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cart</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">((</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">". "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">order</span><span class="p">.</span><span class="na">name</span>
+<span class="w">          </span><span class="o">+</span><span class="w"> </span><span class="s">" "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">order</span><span class="p">.</span><span class="na">qty</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"잔"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="s">"취소할 번호(0은 취소 안 함): "</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sc</span><span class="p">.</span><span class="na">nextInt</span><span class="p">();</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">num</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">cart</span><span class="p">.</span><span class="na">size</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">// TODO: 선택한 주문 객체를 삭제하세요.</span>
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"취소 완료"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">num</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"주문을 유지합니다."</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"없는 주문 번호입니다."</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Order</span><span class="w"> </span><span class="n">order</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">cart</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">order</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">" "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">order</span><span class="p">.</span><span class="na">qty</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"잔"</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">sc</span><span class="p">.</span><span class="na">close</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span></code></pre></div><details class="teacher-answer" data-answer-only="true" data-teacher-answer=""><summary>교사용 정답 보기 · CartEdit.java</summary><div class="teacher-answer-body"><div class="codebox"><div class="code-head"><span>정답 코드</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight"><span class="n">cart</span><span class="p">.</span><span class="na">remove</span><span class="p">(</span><span class="n">num</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span></code></pre></div></div></details><p>결과 확인: 1을 입력하면 아이스티가 삭제됩니다. 0을 입력하면 목록을 유지하고, 3이나 -1을 입력하면 없는 번호라고 안내합니다.</p>
+<h2 id="다른-프로그램에-응용-rpg-인벤토리">다른 프로그램에 응용 — RPG 인벤토리</h2>
+<p>음료 장바구니에서 사용한 ArrayList를 RPG 아이템 목록에도 적용해 봅시다. 먼저 세 가지 아이템을 저장하고 출력한 다음, 두 번째 아이템을 삭제하도록 완성하세요.</p><div class="codebox"><div class="code-head"><span>Inventory.java · 직접 입력</span><button class="copy">코드 복사</button></div><pre><code class="highlight"><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.ArrayList</span><span class="p">;</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Inventory</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">items</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="w">    </span><span class="n">items</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">"검"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">items</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">"방패"</span><span class="p">);</span>
+<span class="w">    </span><span class="n">items</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">"물약"</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// TODO 1: 두 번째 아이템인 "방패"를 삭제하세요.</span>
+<span class="w">    </span><span class="c1">// TODO 2: 남은 아이템을 일반 for문으로 출력하세요.</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span></code></pre></div><details class="teacher-answer"><summary>교사용 정답 보기 · Inventory.java</summary><div class="teacher-answer-body"><div class="codebox"><div class="code-head"><span>java · 정답 코드</span><button class="copy">코드 복사</button></div><pre><code class="highlight"><span class="n">items</span><span class="p">.</span><span class="na">remove</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">items</span><span class="p">.</span><span class="na">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">items</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">i</span><span class="p">));</span>
+<span class="p">}</span></code></pre></div></div></details><p>실행 결과: 검, 물약이 차례대로 출력됩니다. items.remove(1)은 인덱스 1인 두 번째 아이템을 삭제합니다.</p>
+<h2 id="오늘의-확인-질문">오늘의 확인 질문</h2>
+<ul>
+<li><code>get(0)</code>과 <code>get(1)</code>은 무엇이 다른가요?</li>
+<li>목록 항목 수와 주문 수량 합계는 왜 다를 수 있을까요?</li>
+<li>삭제 후 인덱스가 바뀌는 이유는 무엇인가요?</li>
+</ul>
+</article><nav class="page-navigation"><a href="lesson06.html">← 이전 회차</a><a href="lesson08.html">다음 회차 →</a></nav></main>
+<aside class="toc"><div class="toc-header">이 페이지의 목차</div><a class="l2" href="#요구사항-분석과-문제-분해">요구사항 분석과 문제 분해</a><a class="l2" href="#문제-상황부터-생각하기">문제 상황부터 생각하기</a><a class="l2" href="#수업-진행-180분">수업 진행 (180분)</a><a class="l2" href="#개념-1-배열과-arraylist는-무엇이-다를까">개념 1. 배열과 ArrayList는 무엇이 다를까?</a><a class="l2" href="#실습-1-목록의-두-번째-항목-삭제">실습 1. 목록의 두 번째 항목 삭제</a><a class="l2" href="#실습-2-여러-주문의-금액-합산">실습 2. 여러 주문의 금액 합산</a><a class="l2" href="#실습-3-주문-번호로-삭제">실습 3. 주문 번호로 삭제</a><a class="l2" href="#다른-프로그램에-응용-rpg-인벤토리">다른 프로그램에 응용 — RPG 인벤토리</a><a class="l2" href="#오늘의-확인-질문">오늘의 확인 질문</a></aside></div><script src="assets/app.js"></script></body></html>

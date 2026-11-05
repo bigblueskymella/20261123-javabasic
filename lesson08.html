@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><meta content="noindex,nofollow" name="robots"/><title>8회차 · 키오스크 주문 | Java 수업</title><link href="assets/style.css" rel="stylesheet"/></head><body>
+<header class="topbar"><button aria-label="목차 열기" class="menu-toggle">☰</button><a class="brand" href="index.html"><span class="brand-mark">J</span> Java 프로그래밍 <small>30시간 수업</small></a><div class="top-actions"><button aria-label="글자 축소" id="font-minus">A−</button><button aria-label="글자 확대" id="font-plus">A+</button><button aria-label="다크 모드 전환" id="theme">◐</button></div></header>
+<div class="layout"><aside class="sidebar"><div class="sidebar-title">전체 수업 <small>10회 · 30시간</small></div><a class="chapter" href="lesson01.html"><b>01</b><span>출력과 변수</span></a><a class="chapter" href="lesson02.html"><b>02</b><span>입력과 조건문</span></a><a class="chapter" href="lesson03.html"><b>03</b><span>반복문</span></a><a class="chapter" href="lesson04.html"><b>04</b><span>배열과 문자열</span></a><a class="chapter" href="lesson05.html"><b>05</b><span>메서드</span></a><a class="chapter" href="lesson06.html"><b>06</b><span>클래스와 객체</span></a><a class="chapter" href="lesson07.html"><b>07</b><span>목록과 장바구니</span></a><a aria-current="page" class="chapter active" href="lesson08.html"><b>08</b><span>키오스크 주문</span></a><a class="chapter" href="lesson09.html"><b>09</b><span>키오스크 결제</span></a><a class="chapter" href="lesson10.html"><b>10</b><span>최종 프로젝트</span></a><div class="sidebar-foot">교사용 화면 공유 교재<br/>학생에게 전체 사이트를 공개하지 마세요.</div></aside>
+<main class="main"><div class="top-meta"><strong class="teacher-mode-badge">교사용 해설 포함</strong>JAVA · 실습 중심 수업 <span>08 / 10</span></div><article class="article gb-body"><h1 id="8회차-키오스크-1-주문">8회차 — 키오스크 1: 주문</h1>
+<p><strong>학습 목표</strong>: 메뉴를 반복 표시하고 주문을 계속 받아 장바구니와 합계를 관리한다.</p><section aria-labelledby="pf-title-8" class="pf-section">
+<h2 class="pf-title" id="요구사항-분석과-문제-분해">🎯 요구사항 분석과 문제 분해 <small>Problem Framing</small></h2>
+<p class="pf-lead">코드를 입력하기 전에 먼저 무엇을 만들어야 하는지 정리하고, 해결 과정을 작은 단계로 나눠 봅시다.</p>
+<div class="pf-cards"><div class="pf-card"><h3>🔎 1. 요구사항 분석하기</h3><p><strong>오늘 해결할 문제</strong><br/>주문을 계속 받고 동일 메뉴는 수량을 합치고, 최종 합계까지 계산하기</p><dl><div><dt>입력</dt><dd>메뉴 번호, 수량, 기존 장바구니</dd></div><div><dt>출력</dt><dd>주문 내역, 합계, 종료 메시지</dd></div></dl></div>
+<div class="pf-card"><h3>🧩 2. 문제를 작은 단계로 나누기</h3><ol class="pf-steps"><li><span class="pf-num">1</span><span>메뉴 반복 표시하기</span></li><li><span class="pf-num">2</span><span>입력값 확인하기</span></li><li><span class="pf-num">3</span><span>기존 주문 있는지 찾기</span></li><li><span class="pf-num">4</span><span>수량 반영 후 sum() 계산</span></li></ol></div></div>
+<div class="pf-paper-area"><div class="pf-paper"><h3>✏️ 3. 종이에 순서도 그리기</h3><p class="pf-paper-note">아래는 한 가지 예입니다. 먼저 노트에 직접 화살표와 상자를 그려 보세요.</p><div class="pf-flow"><a class="pf-flow-zoom" href="assets/flowchart-08.svg" rel="noopener" target="_blank" title="순서도 크게 보기"><img alt="8회차 문제 해결 순서도" class="pf-flow-illustration" loading="lazy" src="assets/flowchart-08.svg"/></a></div></div>
+<div class="pf-think"><h3>생각해 보기</h3><p>같은 음료를 두 번 주문하면 무엇을 바꿔야 할까?</p><p class="pf-note">코드는 아직 쓰지 말고, 입력 → 판단·처리 → 출력 흐름을 말이나 그림으로 설명해 봅시다.</p><div class="pf-memo"><h4>간단한 로직 메모하기</h4><ul class="pf-checklist"><li>1 메뉴 반복 표시하기</li><li>2 입력값 확인하기</li><li>3 기존 주문 있는지 찾기</li><li>4 수량 반영 후 sum() 계산</li></ul></div><div class="pf-tip"><h4>이렇게 생각해요!</h4><p>같은 메뉴가 있다면 새로 추가하지 않고 수량을 더해요.</p></div></div></div>
+</section>
+<h2 id="문제-상황부터-생각하기">문제 상황부터 생각하기</h2>
+<p>현재 키오스크는 음료 한 잔만 고른 뒤 종료됩니다. 손님이 아이스티와 초코라테를 함께 주문하려면 프로그램의 <strong>어디부터 어디까지</strong> 다시 실행되어야 할까요?</p>
+<ul>
+<li>입력을 0번으로 받았을 때 어떤 동작을 해야 할까요?</li>
+<li>메뉴에 없는 번호나 수량 0을 입력했다면 어떻게 반응해야 할까요?</li>
+<li>주문 합계가 반복할 때마다 0원으로 돌아가지 않으려면 변수는 어디에 있어야 할까요?</li>
+</ul>
+<h2 id="수업-진행-180분">수업 진행 (180분)</h2>
+<table>
+<thead>
+<tr>
+<th>단계</th>
+<th style="text-align:right">시간</th>
+<th>활동</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>문제 제시</td>
+<td style="text-align:right">20분</td>
+<td>실행 전에 결과·데이터 변화 예상</td>
+</tr>
+<tr>
+<td>개념 설명과 실습 1</td>
+<td style="text-align:right">45분</td>
+<td>교사와 함께 입력·수정</td>
+</tr>
+<tr>
+<td>다른 프로그램에 응용</td>
+<td style="text-align:right">50분</td>
+<td>RPG ↔ 키오스크 교차 연습</td>
+</tr>
+<tr>
+<td>학생 개별 구현</td>
+<td style="text-align:right">50분</td>
+<td>TODO 직접 작성, 다른 입력값으로 검증</td>
+</tr>
+<tr>
+<td>정리</td>
+<td style="text-align:right">15분</td>
+<td>자신이 바꾼 코드의 동작 설명</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>실습 방법</strong>: 먼저 질문에 답하고, 해당 회차 폴더의 Java 파일을 열어 <code>TODO</code>를 작성합니다. 정답이 없는 상태의 파일이므로 직접 실행 결과를 확인하세요. 설명을 듣기 전에는 완성 코드를 찾아보지 않습니다.</p>
+</blockquote>
+<h2 id="개념-1-주문은-반복하고-종료는-조건으로-판단">개념 1. 주문은 반복하고, 종료는 조건으로 판단</h2>
+<div class="codebox"><div class="code-head"><span>java</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight"><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// 계속 반복, 중간에 멈출 조건 필요</span>
+<span class="w">  </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"1. 주문  2. 장바구니  0. 종료"</span><span class="p">);</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sc</span><span class="p">.</span><span class="na">nextInt</span><span class="p">();</span>
+<span class="w">  </span><span class="c1">// TODO: action이 0인 경우 반복 중단</span>
+<span class="p">}</span></code></pre></div><details class="teacher-answer" data-answer-only="true" data-teacher-answer=""><summary>교사용 정답 보기 · 실습 해설</summary><div class="teacher-answer-body"><div class="codebox"><div class="code-head"><span>정답</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">action</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">break</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div></div></details><p><code>while (true)</code>는 저절로 끝나지 않습니다. <code>break</code>는 자신을 둘러싼 가장 가까운 반복문을 즉시 종료합니다. <code>return</code>은 메서드를 종료하므로 둘을 구분하세요.</p>
+<p>이 문법을 잊었다면 3회차에서 직접 실행한 다음 예제를 다시 확인합니다.</p>
+<div class="codebox"><div class="code-head"><span>java</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight"><span class="kt">int</span><span class="w"> </span><span class="n">turn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">turn</span><span class="o">++</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">turn</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="c1">// 두 번째 실행에서 반복문 종료</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">turn</span><span class="p">);</span><span class="w"> </span><span class="c1">// 2</span></code></pre></div><p>이제 주문 번호 0을 종료 조건으로 바꾸어 적용합니다.</p>
+<h3 id="실습을-네-단계로-나누기">실습을 네 단계로 나누기</h3><p>① 메뉴 반복 표시 → ② 입력값이 0이면 종료 → ③ 음료와 수량 입력 → ④ 장바구니에 저장 순서로 작업합니다. 처음부터 완성된 전체 키오스크를 이해하려고 하지 않아도 됩니다.</p><div class="codebox"><div class="code-head"><span>java · 함께 입력</span></div><pre><code class="highlight"><span class="kt">int</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="c1">// 반복문 밖에서 유지되는 금액</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"1. 주문 / 0. 종료"</span><span class="p">);</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">menu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sc</span><span class="p">.</span><span class="na">nextInt</span><span class="p">();</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">menu</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="c1">// 다음 단계에서 주문을 처리합니다.</span>
+<span class="p">}</span></code></pre></div><p>먼저 0 입력 시 종료되는지 확인하고 다음 기능으로 넘어갑니다.</p><p><strong>6~7회차 연결:</strong> 상품 한 건은 <code>Order</code> 객체에 이름·가격·수량을 저장합니다. 여러 <code>Order</code>를 <code>ArrayList</code>에 넣고, 총액은 <code>sum(cart)</code> 메서드가 계산합니다. 각 주문의 금액은 <code>order.price * order.qty</code>입니다.</p><h2 id="실습-1-여러-번-주문받기">실습 1. 여러 번 주문받기</h2><p>주문이 들어오면 장바구니 전체 금액을 합산해 바로 출력합니다. 합계는 아직 메서드로 분리하지 않고 반복문으로 계산합니다. 다음 실습에서 같은 계산을 sum() 메서드로 옮겨 봅니다.</p>
+<p><strong>파일: <code>Kiosk1.java</code></strong> · <code>08_키오스크_주문/Kiosk1.java</code></p><p>아래 코드를 파일에 입력하고 TODO를 완성한 뒤 실행하세요.</p><div class="codebox"><div class="code-head"><span>java · 실습 코드</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight" data-replace-id="6"><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.ArrayList</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Scanner</span><span class="p">;</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Kiosk1</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Order</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">price</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">qty</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">Order</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">qty</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">price</span><span class="p">;</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">qty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">qty</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">// 장바구니에 있는 모든 주문금액 계산</span>
+<span class="w">  </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cart</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Order</span><span class="w"> </span><span class="n">order</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">cart</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">total</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">order</span><span class="p">.</span><span class="na">price</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">order</span><span class="p">.</span><span class="na">qty</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">total</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Scanner</span><span class="w"> </span><span class="n">sc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Scanner</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">in</span><span class="p">);</span>
+<span class="w">    </span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="w">    </span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s">"아이스티"</span><span class="p">,</span><span class="w"> </span><span class="s">"초코라테"</span><span class="p">,</span><span class="w"> </span><span class="s">"레몬에이드"</span><span class="p">};</span>
+<span class="w">    </span><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">prices</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">3000</span><span class="p">,</span><span class="w"> </span><span class="mi">3500</span><span class="p">,</span><span class="w"> </span><span class="mi">3500</span><span class="p">};</span>
+
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"1. 주문  2. 장바구니  0. 종료"</span><span class="p">);</span>
+<span class="w">      </span><span class="kt">int</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sc</span><span class="p">.</span><span class="na">nextInt</span><span class="p">();</span>
+<span class="w">      </span><span class="c1">// TODO: 0번이면 반복을 종료하세요.</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">action</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">names</span><span class="p">.</span><span class="na">length</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">((</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">". "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">names</span><span class="o">[</span><span class="n">i</span><span class="o">]</span>
+<span class="w">              </span><span class="o">+</span><span class="w"> </span><span class="s">" "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">prices</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"원"</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="s">"메뉴 번호: "</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sc</span><span class="p">.</span><span class="na">nextInt</span><span class="p">();</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="s">"수량: "</span><span class="p">);</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">qty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sc</span><span class="p">.</span><span class="na">nextInt</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">num</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">names</span><span class="p">.</span><span class="na">length</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">qty</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">cart</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Order</span><span class="p">(</span><span class="n">names</span><span class="o">[</span><span class="n">num</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">prices</span><span class="o">[</span><span class="n">num</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">qty</span><span class="p">));</span>
+<span class="w">          </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"주문을 담았습니다."</span><span class="p">);</span>
+<span class="w">          </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"현재 총금액: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">cart</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"원"</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"입력값을 확인하세요."</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">action</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Order</span><span class="w"> </span><span class="n">order</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">cart</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">order</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">" "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">order</span><span class="p">.</span><span class="na">qty</span>
+<span class="w">              </span><span class="o">+</span><span class="w"> </span><span class="s">"잔 / "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">order</span><span class="p">.</span><span class="na">price</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">order</span><span class="p">.</span><span class="na">qty</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"원"</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"장바구니 총금액: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">cart</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"원"</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"없는 기능입니다."</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">sc</span><span class="p">.</span><span class="na">close</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span></code></pre></div><details class="teacher-answer" data-answer-only="true" data-teacher-answer=""><summary>교사용 정답 보기 · Kiosk1.java</summary><div class="teacher-answer-body"><div class="codebox"><div class="code-head"><span>정답</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">action</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">break</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div></div></details>
+<ol>
+<li>우선 메뉴가 반복해서 출력되는지 확인합니다.</li>
+<li><code>TODO</code>의 종료 조건을 학생이 작성합니다.</li>
+<li>주문 두 번 → 장바구니 확인 → 종료 순서로 시험합니다.</li>
+<li>수량이 0이나 음수일 때 어떻게 되는지 확인하고 필요한 검사를 생각합니다.</li>
+</ol>
+<p>직접 해 볼 입력: 1 → 아이스티(1번) 2잔 → 1 → 초코라테(2번) 1잔 → 2 → 0. 예상 합계는 9,500원입니다.</p><h3 id="ai-duplicate-order">추가 실습. AI를 활용해 같은 메뉴 중복 주문 개선하기</h3><p>AI가 제안한 코드는 정답이 아니라 수정안입니다. 코드를 이해한 뒤 적용하고, 주문 금액이 바뀌지 않는지 직접 확인하세요.</p><aside aria-label="AI에게 질문할 때 지킬 점" class="ai-guidance">
+<h4>🤖 AI에게 질문할 때 지킬 점</h4>
+<div class="ai-guidance-row"><span aria-hidden="true">📝</span><p><strong>문제를 구체적으로 설명하기</strong> — 현재 코드, 발생한 문제, 원하는 결과를 함께 알려주세요.</p></div>
+<div class="ai-guidance-row"><span aria-hidden="true">📚</span><p><strong>배운 문법 (if, for, ArrayList 등)으로 요청하기</strong> — 어려운 코드가 나오면 지금까지 배운 문법으로 설명해 달라고 하세요.</p></div>
+<div class="ai-guidance-row"><span aria-hidden="true">🔍</span><p><strong>변경된 코드 이해하기</strong> — 복사하기 전에 어떤 부분이 왜 바뀌었는지 확인하세요.</p></div>
+<div class="ai-guidance-row"><span aria-hidden="true">🧪</span><p><strong>직접 실행하고 검사하기</strong> — 수정한 기능과 기존 기능이 모두 정상 작동하는지 테스트하세요.</p></div>
+<div class="ai-guidance-row"><span aria-hidden="true">🔒</span><p><strong>개인정보 입력하지 않기</strong> — 비밀번호, 인증키, 개인정보는 AI에게 전달하지 마세요.</p></div>
+</aside><blockquote><p>AI 질문 예시: “아이스티를 두 번 주문하면 장바구니에 두 줄이 생깁니다. 같은 음료는 한 줄로 묶고 수량을 더하고 싶습니다. ArrayList, for, if, equals()로 해결하는 최소 수정안을 보여주고 바뀐 줄의 이유를 설명해 주세요.”</p></blockquote><p>문제 상황: 아이스티 1잔을 주문한 다음 아이스티 2잔을 다시 주문하면 장바구니에 아이스티가 두 줄로 표시됩니다. 같은 음료는 한 줄에 모으고 수량을 합치도록 바꿔 봅시다.</p><p>먼저 직접 확인: 아이스티 1잔 → 아이스티 2잔 → 장바구니 조회. 현재 코드에서는 아이스티가 두 줄이고 전체 수량은 3잔, 합계는 9,000원입니다.</p><p>AI에게 질문하기: 아래의 주문 추가 부분을 보여주고 “왜 동일한 메뉴가 별도 항목으로 추가되나요? ArrayList, for문, equals()만 사용해서 기존 수량을 증가시키는 최소 변경 코드를 설명해 주세요. if·for 중괄호는 생략하지 마세요.”라고 질문하세요.</p><p>AI의 코드를 그대로 붙여 넣지 말고, 기존 주문을 찾았는지 기록하는 변수와 실제로 수량을 변경하는 부분을 먼저 확인하세요. 그런 다음 기존 cart.add(...) 부분을 수정합니다.</p><p>테스트: 아이스티 1잔 + 아이스티 2잔 → 한 줄에 3잔 / 9,000원. 다른 음료 1잔을 주문하면 별도 줄에 추가되어야 합니다. 전체 금액도 일치하는지 확인하세요.</p><details class="teacher-answer"><summary>교사용 정답 보기 · 중복 주문 병합</summary><div class="codebox"><div class="code-head"><span>정답 코드</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight" data-replace-id="9"><span class="kt">boolean</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Order</span><span class="w"> </span><span class="n">order</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">cart</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">order</span><span class="p">.</span><span class="na">name</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">names</span><span class="o">[</span><span class="n">num</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="o">]</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">order</span><span class="p">.</span><span class="na">qty</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">qty</span><span class="p">;</span>
+<span class="w">    </span><span class="n">found</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">found</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="n">cart</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Order</span><span class="p">(</span><span class="n">names</span><span class="o">[</span><span class="n">num</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">prices</span><span class="o">[</span><span class="n">num</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">qty</span><span class="p">));</span>
+<span class="p">}</span></code></pre></div></details>
+<h2 id="개념-2-메서드는-계산-결과를-돌려줄-수-있다">개념 2. 메서드는 계산 결과를 돌려줄 수 있다</h2>
+<div class="codebox"><div class="code-head"><span>java</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight" data-replace-id="10"><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cart</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Order</span><span class="w"> </span><span class="n">order</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">cart</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">total</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">order</span><span class="p">.</span><span class="na">price</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">order</span><span class="p">.</span><span class="na">qty</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">total</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div><p><code>return</code> 값은 메서드를 호출한 위치에서 사용할 수 있습니다. 반면 <code>void</code> 메서드는 값을 돌려주지 않습니다.</p>
+<p>앞 실습의 <code>sum(cart)</code>를 이번에는 직접 작성해 봅니다. <code>Order</code> 객체에는 가격과 수량만 저장하고, 합계 계산은 목록 전체를 받는 메서드 하나로 처리합니다.</p><h2 id="실습-2-장바구니-합계-분리">실습 2. 장바구니 합계 분리</h2><p>실습 1에서 주문 직후와 장바구니 조회 시 합계를 구하는 for문이 반복되었습니다. 같은 계산을 여러 곳에서 작성하지 않도록 sum() 메서드 하나로 묶는 것이 이번 실습의 목표입니다.</p>
+<p>앞에서는 주문할 때마다 금액을 계산했습니다. 이번에는 장바구니에 담긴 모든 주문을 sum() 메서드 하나로 계산합니다. 각 주문의 price(가격)에 qty(수량)를 곱하고, for문에서 total에 계속 더합니다.</p><p><strong>파일: <code>Kiosk2.java</code></strong> · <code>08_키오스크_주문/Kiosk2.java</code></p><p>아래 코드를 파일에 입력하고 TODO를 완성한 뒤 실행하세요.</p><p>실행 전 예상해 보세요. 아이스티 3,000원 × 2잔, 초코라테 3,500원 × 1잔이면 합계는 얼마일까요? TODO를 완성한 뒤 합계가 9,500원인지 확인하세요.</p><div class="codebox"><div class="code-head"><span>java · 실습 코드</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight" data-replace-id="7"><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.ArrayList</span><span class="p">;</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Kiosk2</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Order</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">price</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">qty</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">Order</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">price</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">qty</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">name</span><span class="p">;</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">price</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">price</span><span class="p">;</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">qty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">qty</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kd">static</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cart</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Order</span><span class="w"> </span><span class="n">order</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">cart</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">// TODO: 각 주문의 가격 × 수량을 total에 더하세요.</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">total</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Order</span><span class="o">&gt;</span><span class="w"> </span><span class="n">cart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="w">    </span><span class="n">cart</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Order</span><span class="p">(</span><span class="s">"아이스티"</span><span class="p">,</span><span class="w"> </span><span class="mi">3000</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">));</span>
+<span class="w">    </span><span class="n">cart</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Order</span><span class="p">(</span><span class="s">"초코라테"</span><span class="p">,</span><span class="w"> </span><span class="mi">3500</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">));</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"합계: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">sum</span><span class="p">(</span><span class="n">cart</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"원"</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span></code></pre></div><details class="teacher-answer" data-answer-only="true" data-teacher-answer=""><summary>교사용 정답 보기 · Kiosk2.java</summary><div class="teacher-answer-body"><div class="codebox"><div class="code-head"><span>정답</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight" data-replace-id="11"><span class="n">total</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">order</span><span class="p">.</span><span class="na">price</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">order</span><span class="p">.</span><span class="na">qty</span><span class="p">;</span></code></pre></div></div></details><h3 id="키오스크-합계-추가-연습">추가 연습. 주문 한 건 더 추가하기</h3><p>기존 두 주문에 딸기라테 4,000원 2잔을 추가하면 합계는 얼마일까요? 주문을 추가하는 코드를 작성하고 출력 결과를 확인하세요.</p><div class="codebox"><div class="code-head"><span>java · 실습 코드</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight"><span class="c1">// TODO: cart에 딸기라테 4,000원 2잔을 추가하세요.</span>
+<span class="c1">// 작성 위치: Kiosk2.java의 main()에서 두 번째 cart.add() 바로 아래</span></code></pre></div><details class="teacher-answer" data-answer-only="true" data-teacher-answer=""><summary>교사용 정답 보기 · Kiosk2.java · 주문 추가</summary><div class="teacher-answer-body"><div class="codebox"><div class="code-head"><span>정답</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight"><span class="n">cart</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Order</span><span class="p">(</span><span class="s">"딸기라테"</span><span class="p">,</span><span class="w"> </span><span class="mi">4000</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">));</span></code></pre></div></div></details><p>추가 주문을 넣은 후 예상 합계는 17,500원입니다. 이미 만든 sum()을 수정하지 않아도 전체 주문이 계산되는지 확인합니다.</p>
+<p>6회차에 배운 객체를 게임에도 적용합니다. <code>Hero</code>와 <code>Monster</code>를 만들고, 체력은 각각 <code>hero.hp</code>, <code>monster.hp</code>에 저장합니다. 반복문에서는 객체의 체력을 변경하되 새로운 객체를 매번 만들지 않습니다.</p><h2 id="다른-프로그램에-응용-반복-전투">다른 프로그램에 응용 — 반복 전투</h2>
+<p>키오스크에서는 0을 입력하면 주문이 끝납니다. 게임에서는 도망(0)을 선택하면 전투를 끝내도록 바꿔 봅시다. 반복 구조는 같지만, 반복하는 작업은 주문 처리 대신 공격·회복이 됩니다.</p><p>먼저 한 번의 전투가 아니라, 행동 메뉴가 계속 나타나는 장면을 생각해 보세요. 공격(1)을 선택하면 몬스터의 HP가 20 감소하고, 회복(2)을 선택하면 내 HP가 15 증가합니다. 도망(0)을 선택해야만 종료합니다.</p><p>BattleLoop.java — 아래 코드는 함께 입력하고, TODO 1~3을 직접 완성하세요.</p><div class="codebox"><div class="code-head"><span>java · 실습 코드</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight" data-replace-id="8"><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Scanner</span><span class="p">;</span>
+
+<span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">BattleLoop</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Hero</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">hp</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">Hero</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">hp</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">hp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hp</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kd">static</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Monster</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">hp</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">Monster</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">hp</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">this</span><span class="p">.</span><span class="na">hp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">hp</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="kd">public</span><span class="w"> </span><span class="kd">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">Scanner</span><span class="w"> </span><span class="n">sc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Scanner</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">in</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Hero</span><span class="w"> </span><span class="n">hero</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Hero</span><span class="p">(</span><span class="mi">60</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Monster</span><span class="w"> </span><span class="n">monster</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Monster</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"1. 공격  2. 회복  0. 도망"</span><span class="p">);</span>
+<span class="w">      </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="s">"행동 선택: "</span><span class="p">);</span>
+<span class="w">      </span><span class="kt">int</span><span class="w"> </span><span class="n">action</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sc</span><span class="p">.</span><span class="na">nextInt</span><span class="p">();</span>
+<span class="w">      </span><span class="c1">// TODO 1: 0을 입력하면 전투를 종료하세요.</span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">action</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// TODO 2: monster.hp를 20 감소시키세요.</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"몬스터 HP: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">monster</span><span class="p">.</span><span class="na">hp</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">action</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// TODO 3: hero.hp를 15 회복시키세요.</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">hero</span><span class="p">.</span><span class="na">hp</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">          </span><span class="n">hero</span><span class="p">.</span><span class="na">hp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"내 HP: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">hero</span><span class="p">.</span><span class="na">hp</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"없는 행동입니다."</span><span class="p">);</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">"전투가 종료되었습니다."</span><span class="p">);</span>
+<span class="w">    </span><span class="n">sc</span><span class="p">.</span><span class="na">close</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span></code></pre></div><details class="teacher-answer" data-answer-only="true" data-teacher-answer=""><summary>교사용 정답 보기 · BattleLoop.java · TODO 1~3</summary><div class="teacher-answer-body"><div class="codebox"><div class="code-head"><span>정답</span><button class="copy" type="button">코드 복사</button></div><pre><code class="highlight" data-replace-id="12"><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">action</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">monster</span><span class="p">.</span><span class="na">hp</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
+<span class="n">hero</span><span class="p">.</span><span class="na">hp</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span></code></pre></div></div></details><p>확인할 결과: 1번을 두 번 입력하면 몬스터 HP가 100 → 80 → 60으로 줄어듭니다. 2번을 누르면 내 HP가 15 증가하고, 0번을 입력하면 반복문을 빠져나옵니다.</p>
+<h2 id="오늘의-확인-질문">오늘의 확인 질문</h2>
+<ul>
+<li>반복문 밖에 선언해야 하는 변수에는 어떤 것이 있나요?</li>
+<li><code>break</code>와 <code>return</code>의 차이를 설명할 수 있나요?</li>
+<li>장바구니에 주문이 없다면 합계는 얼마여야 하나요?</li>
+</ul>
+</article><nav class="page-navigation"><a href="lesson07.html">← 이전 회차</a><a href="lesson09.html">다음 회차 →</a></nav></main>
+<aside class="toc"><div class="toc-header">이 페이지의 목차</div><a class="l2" href="#요구사항-분석과-문제-분해">요구사항 분석과 문제 분해</a><a class="l2" href="#문제-상황부터-생각하기">문제 상황부터 생각하기</a><a class="l2" href="#수업-진행-180분">수업 진행 (180분)</a><a class="l2" href="#개념-1-주문은-반복하고-종료는-조건으로-판단">개념 1. 주문은 반복하고, 종료는 조건으로 판단</a><a class="l3" href="#실습을-네-단계로-나누기">실습을 네 단계로 나누기</a><a class="l2" href="#실습-1-여러-번-주문받기">실습 1. 여러 번 주문받기</a><a class="l3" href="#ai-duplicate-order">추가 실습. AI를 활용해 같은 메뉴 중복 주문 개선하기</a><a class="l2" href="#개념-2-메서드는-계산-결과를-돌려줄-수-있다">개념 2. 메서드는 계산 결과를 돌려줄 수 있다</a><a class="l2" href="#실습-2-장바구니-합계-분리">실습 2. 장바구니 합계 분리</a><a class="l3" href="#키오스크-합계-추가-연습">추가 연습. 주문 한 건 더 추가하기</a><a class="l2" href="#다른-프로그램에-응용-반복-전투">다른 프로그램에 응용 — 반복 전투</a><a class="l2" href="#오늘의-확인-질문">오늘의 확인 질문</a></aside></div><script src="assets/app.js"></script></body></html>
